@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import User from '../models/User.js';
 import { signAccessToken, signRefreshToken, setAuthCookies } from '../utils/tokens.js';
+import jwt from 'jsonwebtoken';
 
 const registerSchema = z.object({
   name: z.string().trim().min(1).max(60),
@@ -43,5 +44,35 @@ export async function login(req, res) {
   if (!ok) return res.status(401).json({ error: 'Invalid email or password' });
 
   setAuthCookies(res, signAccessToken(user.id), signRefreshToken(user.id));
+  res.json({ user: publicUser(user) });
+}
+
+export async function refresh(req, res) {
+  const token = req.cookies.refreshToken;
+  if (!token) return res.status(401).json({ error: 'No refresh token' });
+
+  let payload;
+  try {
+    payload = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+  } catch {
+    return res.status(401).json({ error: 'Invalid refresh token' });
+  }
+
+  const user = await User.findById(payload.sub);
+  if (!user) return res.status(401).json({ error: 'User not found' });
+
+  setAuthCookies(res, signAccessToken(user.id), signRefreshToken(user.id));
+  res.json({ user: publicUser(user) });
+}
+
+export function logout(req, res) {
+  res.clearCookie('accessToken');
+  res.clearCookie('refreshToken', { path: '/api/v1/auth' });
+  res.json({ ok: true });
+}
+
+export async function me(req, res) {
+  const user = await User.findById(req.userId);
+  if (!user) return res.status(401).json({ error: 'User not found' });
   res.json({ user: publicUser(user) });
 }
