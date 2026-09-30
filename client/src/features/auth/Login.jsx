@@ -39,6 +39,9 @@ export default function Login() {
         <input name="password" type="password" placeholder="Password" value={form.password}
           onChange={onChange} required
           className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+        <div className="text-center">
+       <Link to="/forgot-password" className="text-sm text-indigo-600">Forgot password?</Link>
+       </div>
 
         <button disabled={busy}
           className="w-full bg-indigo-600 text-white rounded-lg py-2 font-medium hover:bg-indigo-700 disabled:opacity-50">
