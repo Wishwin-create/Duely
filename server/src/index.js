@@ -31,11 +31,7 @@ async function startServer() {
   } catch (error) {
     console.error('MongoDB connection failed. Check your Atlas whitelist and MONGO_URI.');
     console.error(error.message);
-<<<<<<< HEAD
-    console.error('Starting the API without the database connection for local development.');
-=======
     process.exit(1);
->>>>>>> 605632cf108d652354386336a00c6d0dffe0c91b
   }
 
   app.listen(port, () => {
