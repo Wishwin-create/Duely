@@ -6,6 +6,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.js';
+import courseRoutes from './routes/course.routes.js';
 
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 
 app.get('/api/v1/health', (req, res) => res.json({ ok: true }));
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/courses', courseRoutes);
 
 async function startServer() {
   try {
@@ -29,7 +31,7 @@ async function startServer() {
   } catch (error) {
     console.error('MongoDB connection failed. Check your Atlas whitelist and MONGO_URI.');
     console.error(error.message);
-    console.error('Starting the API without the database connection for local development.');
+    process.exit(1);
   }
 
   app.listen(port, () => {
