@@ -95,10 +95,11 @@ export async function deleteTask(req, res) {
   if (!mongoose.isValidObjectId(req.params.id)) {
     return res.status(400).json({ error: 'Invalid id' });
   }
-  const task = await Task.findOneAndUpdate(
+    const task = await Task.findOneAndUpdate(
     { _id: req.params.id, user: req.userId, deletedAt: null },
-    { deletedAt: new Date() }
-  );
+    changes,
+    { returnDocument: 'after' }
+  ).populate('course', 'code title color');
   if (!task) return res.status(404).json({ error: 'Task not found' });
-  res.json({ ok: true });
+  res.json({ task });
 }
