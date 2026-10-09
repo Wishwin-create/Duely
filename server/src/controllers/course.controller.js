@@ -41,7 +41,7 @@ export async function updateCourse(req, res) {
   const course = await Course.findOneAndUpdate(
     { _id: req.params.id, user: req.userId },
     parsed.data,
-    { new: true }
+    { returnDocument: 'after' }
   );
   if (!course) return res.status(404).json({ error: 'Course not found' });
   res.json({ course });
