@@ -16,9 +16,16 @@ export default function Dashboard() {
         <h1 className="text-2xl font-bold">Hi, {user.name} 👋</h1>
         <p className="text-slate-500 mt-1">{user.email}</p>
         <p className="mt-6 text-slate-600">Your Today view will live here.</p>
-        <Link to="/courses" className="mt-6 inline-block text-indigo-600 font-medium">
+       <div>
+         <Link to="/courses" className="mt-6 inline-block text-indigo-600 font-medium">
           Manage courses →
         </Link>
+       </div>
+        <div>
+          <Link to="/tasks" className="mt-6 mr-6 inline-block text-indigo-600 font-medium">
+          Tasks →
+        </Link>
+        </div>
         <div>
         <button onClick={onLogout}
           className="mt-6 border rounded-lg px-4 py-2 text-sm hover:bg-slate-100">

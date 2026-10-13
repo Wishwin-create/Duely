@@ -8,6 +8,7 @@ import ForgotPassword from './features/auth/ForgotPassword';
 import ResetPassword from './features/auth/ResetPassword';
 import Dashboard from './features/dashboard/Dashboard';
 import CoursesPage from './features/courses/CoursesPage';
+import TasksPage from './features/tasks/TasksPage';
 
 
 export default function App() {
@@ -21,7 +22,8 @@ export default function App() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-       <Route path="/courses" element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
+     <Route path="/courses" element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
+     <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
