@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import QuickAdd from './QuickAdd';
 import TaskRow from './TaskRow';
-import { useTasks, useUpdateTask, useDeleteTask } from './useTasks';
+import TaskDetail from './TaskDetail';
+import { useTasks, useUpdateTask } from './useTasks';
 
 const TABS = [
   { id: 'today', label: 'Today' },
@@ -20,9 +21,11 @@ const EMPTY = {
 
 export default function TasksPage() {
   const [view, setView] = useState('today');
+  const [selectedId, setSelectedId] = useState(null);
   const { data: tasks = [], isLoading } = useTasks(view);
   const update = useUpdateTask();
-  const remove = useDeleteTask();
+
+  const selected = tasks.find((t) => t._id === selectedId);
 
   const toggle = (task) =>
     update.mutate({ id: task._id, status: task.status === 'done' ? 'todo' : 'done' });
@@ -57,9 +60,13 @@ export default function TasksPage() {
         )}
 
         {tasks.map((t) => (
-          <TaskRow key={t._id} task={t} onToggle={toggle} onDelete={remove.mutate} />
+          <TaskRow key={t._id} task={t} onToggle={toggle} onOpen={setSelectedId} />
         ))}
       </div>
+
+      {selected && (
+        <TaskDetail key={selected._id} task={selected} onClose={() => setSelectedId(null)} />
+      )}
     </div>
   );
 }
