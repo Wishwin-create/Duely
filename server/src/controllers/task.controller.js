@@ -6,13 +6,23 @@ import Course from '../models/Course.js';
 const taskSchema = z.object({
   title: z.string().trim().min(1).max(200),
   notes: z.string().max(5000).optional(),
+  subtasks: z
+    .array(
+      z.object({
+        _id: z.string().optional(),
+        title: z.string().trim().min(1).max(200),
+        done: z.boolean().optional(),
+      })
+    )
+    .max(50)
+    .optional(),
   course: z.string().nullable().optional(),
   type: z.enum(['task', 'assignment', 'exam', 'quiz']).optional(),
   priority: z.number().int().min(1).max(3).optional(),
   status: z.enum(['todo', 'in_progress', 'done']).optional(),
   dueAt: z.coerce.date().nullable().optional(),
-  weight: z.number().min(0).max(100).optional(),
-  score: z.number().min(0).max(100).optional(),
+  weight: z.number().min(0).max(100).nullable().optional(),
+  score: z.number().min(0).max(100).nullable().optional(),
 });
 const updateSchema = taskSchema.partial();
 const startOfDay = (d = new Date()) => new Date(d.getFullYear(), d.getMonth(), d.getDate());

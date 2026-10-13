@@ -6,6 +6,12 @@ const taskSchema = new mongoose.Schema(
     course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', default: null },
     title: { type: String, required: true, trim: true },
     notes: { type: String, default: '' },
+    subtasks: [
+    {
+    title: { type: String, required: true, trim: true },
+    done: { type: Boolean, default: false },
+    },
+    ],
     type: { type: String, enum: ['task', 'assignment', 'exam', 'quiz'], default: 'task' },
     priority: { type: Number, min: 1, max: 3, default: 2 },
     status: { type: String, enum: ['todo', 'in_progress', 'done'], default: 'todo' },
